@@ -45,6 +45,7 @@ dnf5 install -y htop btop ripgrep jq yq fzf bat eza curl tar gzip unzip --skip-u
 dnf5 -y copr disable wezfurlong/wezterm-nightly
 
 # Install Starship prompt
+mkdir -p /usr/local/bin
 curl -fsSL https://starship.rs/install.sh | sh -s -- -y
 
 ### Enable services
