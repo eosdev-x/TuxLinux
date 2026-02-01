@@ -39,7 +39,7 @@ dnf5 install -y golang rust cargo nodejs npm python3-pip java-17-openjdk-devel j
 dnf5 install -y distrobox podman-compose --skip-unavailable
 
 # Utilities
-dnf5 install -y htop btop ripgrep jq yq fzf bat eza --skip-unavailable
+dnf5 install -y htop btop ripgrep jq yq fzf bat eza curl tar gzip unzip --skip-unavailable
 
 # Disable COPRs
 dnf5 -y copr disable wezfurlong/wezterm-nightly
