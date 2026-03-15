@@ -44,7 +44,7 @@ dnf5 install -y code
 dnf5 install -y git git-lfs gh --skip-unavailable
 
 # Languages & runtimes (what you can't get via distrobox/toolbox)
-dnf5 install -y golang rust cargo nodejs npm python3-pip java-17-openjdk-devel java-21-openjdk-devel --skip-unavailable
+dnf5 install -y golang rust cargo nodejs nodejs-full-i18n npm python3-pip java-17-openjdk-devel java-21-openjdk-devel --skip-unavailable
 
 # Tauri build dependencies
 dnf5 install -y webkit2gtk4.1-devel openssl-devel gtk3-devel libappindicator-gtk3-devel librsvg2-devel pango-devel --skip-unavailable
