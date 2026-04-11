@@ -53,7 +53,7 @@ dnf5 install -y golang rust cargo nodejs nodejs-full-i18n npm python3-pip java-1
 dnf5 install -y \
   webkit2gtk4.1-devel openssl-devel gtk3-devel \
   libappindicator-gtk3-devel librsvg2-devel pango-devel \
-  clang-devel lld cmake pkg-config \
+  lld pkg-config \
   protobuf-compiler protobuf-devel \
   sqlite-devel ninja-build \
   --skip-unavailable
