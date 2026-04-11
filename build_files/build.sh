@@ -37,8 +37,11 @@ dnf5 install -y @c-development @development-tools
 # Terminal & shell
 dnf5 install -y tmux vim zsh fd-find zoxide wezterm --skip-unavailable
 
+# Browsers
+dnf5 install -y chromium --skip-unavailable
+
 # Editor
-dnf5 install -y code
+dnf5 install -y code --skip-unavailable
 
 # Version control & dev essentials
 dnf5 install -y git git-lfs gh --skip-unavailable
