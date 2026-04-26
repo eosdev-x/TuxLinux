@@ -56,6 +56,7 @@ dnf5 install -y \
   lld pkg-config \
   protobuf-compiler protobuf-devel \
   sqlite-devel ninja-build \
+  pipewire-devel mesa-libgbm-devel \
   --skip-unavailable
 
 # Containers & virtualization
