@@ -56,8 +56,19 @@ dnf5 install -y \
   lld pkg-config \
   protobuf-compiler protobuf-devel \
   sqlite-devel ninja-build \
-  pipewire-devel mesa-libgbm-devel \
   --skip-unavailable
+
+# PipeWire & GBM headers (can't dnf install — Bazzite custom builds conflict with Fedora repos)
+# Extract headers and pkg-config from matching RPM versions
+PIPEWIRE_DEVEL_RPM="pipewire-devel-1.4.10-1.fc43.x86_64"
+MESA_GBM_DEVEL_RPM="mesa-libgbm-devel-25.2.7-3.fc43.x86_64"
+dnf5 download -y "${PIPEWIRE_DEVEL_RPM}" "${MESA_GBM_DEVEL_RPM}" --destdir=/tmp/rpm-extract 2>/dev/null || true
+if [ -d /tmp/rpm-extract ]; then
+  for rpm_file in /tmp/rpm-extract/*.rpm; do
+    rpm2cpio "$rpm_file" | (cd / && cpio -idm 2>/dev/null) || true
+  done
+  rm -rf /tmp/rpm-extract
+fi
 
 # Containers & virtualization
 dnf5 install -y distrobox podman-compose --skip-unavailable
