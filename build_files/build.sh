@@ -47,7 +47,7 @@ dnf5 install -y code --skip-unavailable
 dnf5 install -y git git-lfs gh --skip-unavailable
 
 # Languages & runtimes
-dnf5 install -y golang rust cargo nodejs nodejs-full-i18n npm python3-pip java-17-openjdk-devel java-21-openjdk-devel qt6-qtbase-devel --skip-unavailable
+dnf5 install -y golang rust cargo nodejs nodejs-full-i18n npm python3-pip java-17-openjdk-devel java-21-openjdk-devel qt6-qtbase-devel cmake --skip-unavailable
 
 # Build tools & native deps (Tauri, Flutter, Rust bindings, Protobuf)
 dnf5 install -y \
