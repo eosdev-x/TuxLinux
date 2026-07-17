@@ -49,13 +49,14 @@ dnf5 install -y git git-lfs gh --skip-unavailable
 # Languages & runtimes
 dnf5 install -y golang rust cargo nodejs nodejs-full-i18n npm python3-pip java-17-openjdk-devel java-21-openjdk-devel qt6-qtbase-devel cmake --skip-unavailable
 
-# Build tools & native deps (Tauri, Flutter, Rust bindings, Protobuf)
+# Build tools & native deps (Tauri, Flutter, Rust bindings, Protobuf, Qt6)
 dnf5 install -y \
   webkit2gtk4.1-devel openssl-devel gtk3-devel \
   libappindicator-gtk3-devel librsvg2-devel pango-devel \
   lld pkg-config \
   protobuf-compiler protobuf-devel \
   sqlite-devel ninja-build \
+  qt6-qtdeclarative-devel qt6-qtsvg-devel qt6-qtshadertools-devel libgit2-devel qtkeychain-qt6-devel \
   --skip-unavailable
 
 # PipeWire & GBM headers (can't dnf install — Bazzite custom builds conflict with Fedora repos)
