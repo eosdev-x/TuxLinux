@@ -4,6 +4,13 @@ set -ouex pipefail
 
 ### Add Repositories
 
+# OpenAI desktop app (includes Codex). Keep package and repository signature checks enabled.
+# Key and repository configuration from the official ChatGPT Linux RPM.
+install -Dm0644 /ctx/repos/RPM-GPG-KEY-chatgpt-3BFA0E4AE8B8CC16A2D9BA684A3B4A566C4660E4.asc \
+    /etc/pki/rpm-gpg/RPM-GPG-KEY-chatgpt-3BFA0E4AE8B8CC16A2D9BA684A3B4A566C4660E4.asc
+rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-chatgpt-3BFA0E4AE8B8CC16A2D9BA684A3B4A566C4660E4.asc
+install -Dm0644 /ctx/repos/chatgpt.repo /etc/yum.repos.d/chatgpt.repo
+
 # VS Code (Microsoft repo)
 cat > /etc/yum.repos.d/vscode.repo << 'EOF'
 [code]
@@ -43,6 +50,9 @@ dnf5 install -y chromium
 # Editor
 dnf5 install -y code
 
+# ChatGPT desktop with Codex; updated through subsequent image builds.
+dnf5 install -y chatgpt
+
 # Version control & dev essentials
 dnf5 install -y git git-lfs gh
 
@@ -67,6 +77,9 @@ dnf5 install -y distrobox podman-compose
 
 # Utilities
 dnf5 install -y htop btop ripgrep jq yq fzf bat eza curl tar gzip unzip zstd shellcheck
+
+# Desktop system information overlay
+dnf5 install -y conky
 
 # Lazygit (needs COPR)
 dnf5 -y copr enable atim/lazygit
