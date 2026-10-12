@@ -66,7 +66,7 @@ dnf5 install -y \
   lld pkg-config \
   protobuf-compiler protobuf-devel \
   sqlite-devel ninja-build \
-  qt6-qtdeclarative-devel qt6-qtsvg-devel qt6-qtshadertools-devel libgit2-devel qtkeychain-qt6-devel
+  qt6-qtdeclarative-devel qt6-qtwebengine-devel qt6-qtsvg-devel qt6-qtshadertools-devel libgit2-devel qtkeychain-qt6-devel
 
 # Bazzite ships an epoch-bumped/custom Mesa stack. Fedora development RPMs
 # require a different runtime. Keep these headers in Containerfile.devel rather
