@@ -9,7 +9,7 @@ before switching, especially for older NVIDIA GPUs.
 
 - Go, Rust/Cargo, Node.js/npm, Python/pip, and Fedora's current default JDK
 - VS Code, Vim, WezTerm, tmux, Zsh, Starship, Git/GitHub CLI, and CLI utilities
-- C/C++ build tools, Tauri/GTK/WebKitGTK, Qt6, Protobuf, PipeWire and GBM development dependencies
+- C/C++ build tools, Tauri/GTK/WebKitGTK, Qt6 and Protobuf development dependencies
 - Podman, podman-compose, Distrobox, Chromium, cloudflared, and Kvantum
 - Steam and the graphics/gaming stack inherited from Bazzite
 - Flutter 3.29.3 with its bundled Dart SDK, seeded from a checksum-verified archive
@@ -28,6 +28,24 @@ that extracted SDK. Host rollback does not undo changes to the user's SDK.
 
 The system Podman socket is enabled for rootful workloads. Rootless containers
 use their own user service; do not expose either socket to untrusted clients.
+
+## PipeWire / GBM development
+
+Bazzite's custom Mesa packages do not satisfy Fedora development RPMs' exact
+runtime requirements. Build projects needing these interfaces in the supplied
+Fedora SDK container, preserving the host gaming drivers:
+
+```bash
+podman build -f Containerfile.devel -t localhost/tuxlinux-native-sdk:latest .
+distrobox create --name tuxlinux-native-sdk --image localhost/tuxlinux-native-sdk:latest
+distrobox enter tuxlinux-native-sdk
+pkg-config --modversion libpipewire-0.3 gbm
+```
+
+The SDK includes matching package-managed runtime libraries and headers. It is
+for compilation, not validation of host NVIDIA/graphics integration. A binary
+built there still needs compatibility testing if deployed outside the container.
+Distrobox shares your home by default; it is not an untrusted-code sandbox.
 
 ## Installation and signature trust
 
@@ -91,7 +109,7 @@ shellcheck build_files/*.sh
 
 CI checks required tools/development metadata during the build, runs bootc lint,
 and exercises Flutter as an ordinary user in a read-only container. It also
-compiles against PipeWire/GBM headers. These checks do not replace a booted VM or
+builds a separate native SDK and compiles against its PipeWire/GBM headers. These checks do not replace a booted VM or
 real NVIDIA hardware test. Test login, graphics, networking, update, and rollback
 on a disposable deployment before relying on a release.
 

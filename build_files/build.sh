@@ -58,8 +58,9 @@ dnf5 install -y \
   sqlite-devel ninja-build \
   qt6-qtdeclarative-devel qt6-qtsvg-devel qt6-qtshadertools-devel libgit2-devel qtkeychain-qt6-devel
 
-# Install development headers through RPM so versions and ownership stay coherent.
-dnf5 install -y pipewire-devel mesa-libgbm-devel
+# Bazzite ships an epoch-bumped/custom Mesa stack. Fedora development RPMs
+# require a different runtime. Keep these headers in Containerfile.devel rather
+# than extracting RPMs over the host or replacing gaming drivers.
 
 # Containers & virtualization
 dnf5 install -y distrobox podman-compose

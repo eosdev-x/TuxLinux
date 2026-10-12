@@ -35,3 +35,9 @@ jobs:
         run: |
           cosign public-key --key env://COSIGN_PRIVATE_KEY > /tmp/signing-key.pub
           diff -u cosign.pub /tmp/signing-key.pub
+  native-sdk:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - name: Build and link native SDK dependencies
+        run: podman build -f Containerfile.devel -t localhost/tuxlinux-native-sdk:test .
