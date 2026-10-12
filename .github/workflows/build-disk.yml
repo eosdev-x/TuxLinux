@@ -47,11 +47,13 @@ jobs:
           # Concatenate the types with a hyphen
           DISK_TYPE=$(echo "${{ matrix.disk-type }}" | tr ' ' '-')
           # Lowercase the image uri
-          echo "IMAGE_REGISTRY=${IMAGE_REGISTRY,,}" >> ${GITHUB_ENV}
-          echo "IMAGE_NAME=${IMAGE_NAME,,}" >> ${GITHUB_ENV}
-          echo "DISK_TYPE=${DISK_TYPE}" >> ${GITHUB_ENV}
-          echo "USER_UID=${USER_UID}" >> ${GITHUB_ENV}
-          echo "USER_GID=${USER_GID}" >> ${GITHUB_ENV}
+          {
+            echo "IMAGE_REGISTRY=${IMAGE_REGISTRY,,}"
+            echo "IMAGE_NAME=${IMAGE_NAME,,}"
+            echo "DISK_TYPE=${DISK_TYPE}"
+            echo "USER_UID=${USER_UID}"
+            echo "USER_GID=${USER_GID}"
+          } >> "$GITHUB_ENV"
 
       - name: Maximize build space
         uses: ublue-os/remove-unwanted-software@cc0becac701cf642c8f0a6613bbdaf5dc36b259e # v9
@@ -93,8 +95,9 @@ jobs:
           RCLONE_CONFIG_S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
           RCLONE_CONFIG_S3_REGION: ${{ secrets.S3_REGION }}
           RCLONE_CONFIG_S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
+          S3_BUCKET: ${{ secrets.S3_BUCKET_NAME }}
           SOURCE_DIR: ${{ steps.build.outputs.output-directory }}
         run: |
           sudo apt-get update
           sudo apt-get install -y rclone
-          rclone copy $SOURCE_DIR S3:${{ secrets.S3_BUCKET_NAME }}/${{ matrix.disk-type }}/
+          rclone copy "$SOURCE_DIR" "S3:${S3_BUCKET}/${DISK_TYPE}/"
