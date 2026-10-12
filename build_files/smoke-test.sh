@@ -25,6 +25,6 @@ if [[ ${1:-} != --build ]]; then
     flutter --version
     dart --version
     flutter config --no-analytics
-    flutter create --platforms=linux --no-pub /tmp/flutter-smoke
-    test -f /tmp/flutter-smoke/linux/CMakeLists.txt
+    flutter create --platforms=linux --no-pub /tmp/flutter_smoke
+    test -f /tmp/flutter_smoke/linux/CMakeLists.txt
 fi
