@@ -15,6 +15,8 @@ on:
     paths:
       - 'disk_config/**'
       - '.github/workflows/build-disk.yml'
+      - 'Containerfile.builder'
+      - 'scripts/build-disk.sh'
 
 env:
   IMAGE_NAME: ${{ github.event.repository.name }} # output of build.yml, keep in sync
@@ -65,14 +67,14 @@ jobs:
 
       - name: Build disk images
         id: build
-        uses: osbuild/bootc-image-builder-action@028e4d28330efe546229eb9cb52aee78174d2347
-        with:
-          builder-image: ${{ env.BIB_IMAGE }}
-          config-file: ${{ matrix.disk-type == 'anaconda-iso' && './disk_config/iso-kde.toml' || './disk_config/disk.toml' }}
-          image: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DEFAULT_TAG }}
-          chown: ${{ env.USER_UID }}:${{ env.USER_GID }}
-          types: ${{ matrix.disk-type }}
-          additional-args: --use-librepo=True --rootfs=btrfs
+        env:
+          IMAGE_TYPE: ${{ matrix.disk-type }}
+          DISK_CONFIG: ${{ matrix.disk-type == 'anaconda-iso' && 'disk_config/iso-kde.toml' || 'disk_config/disk.toml' }}
+        run: |
+          sudo bash scripts/build-disk.sh \
+            "${IMAGE_REGISTRY}/${IMAGE_NAME}:${DEFAULT_TAG}" "$IMAGE_TYPE" \
+            "$DISK_CONFIG" "$PWD/output" "$BIB_IMAGE"
+          echo "output-directory=$PWD/output" >> "$GITHUB_OUTPUT"
 
       - name: Upload disk images and Checksum to Job Artifacts
         if: inputs.upload-to-s3 != true && github.event_name != 'pull_request'

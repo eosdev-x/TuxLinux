@@ -104,7 +104,7 @@ just build
 podman build -t tuxlinux .
 
 python3 -m unittest discover -s tests -v
-shellcheck build_files/*.sh
+shellcheck build_files/*.sh scripts/*.sh
 ```
 
 CI checks required tools/development metadata during the build, runs bootc lint,
@@ -118,6 +118,9 @@ is supported. The disk workflow consumes the published `latest` image; a PR disk
 build checks installer configuration, not an unpublished PR container. Installer
 post-install configuration retains the TuxLinux origin with signature enforcement.
 QCOW2 and installer artifacts have separate names to prevent matrix overwrites.
+Both local and CI builds use `scripts/build-disk.sh`, which copies the source
+image's public RPM keys into a temporary builder image for dependency solving.
+Repository signature checks remain enabled.
 
 Packages live in `build_files/build.sh`; launchers, trust setup, and smoke checks
 live alongside it. Flutter and Starship versions/checksums must be updated

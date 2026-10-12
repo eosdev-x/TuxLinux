@@ -162,25 +162,8 @@ _build-bib $target_image $tag $type $config: (_rootful_load_image target_image t
     #!/usr/bin/env bash
     set -euo pipefail
 
-    args="--type ${type} "
-    args+="--use-librepo=True "
-    args+="--rootfs=btrfs"
-
     BUILDTMP=$(mktemp -p "${PWD}" -d -t _build-bib.XXXXXXXXXX)
-
-    sudo podman run \
-      --rm \
-      -it \
-      --privileged \
-      --pull=newer \
-      --net=host \
-      --security-opt label=type:unconfined_t \
-      -v $(pwd)/${config}:/config.toml:ro \
-      -v $BUILDTMP:/output \
-      -v /var/lib/containers/storage:/var/lib/containers/storage \
-      "${bib_image}" \
-      ${args} \
-      "${target_image}:${tag}"
+    sudo bash scripts/build-disk.sh "${target_image}:${tag}" "$type" "$config" "$BUILDTMP" "$bib_image"
 
     mkdir -p output
     sudo mv -f $BUILDTMP/* output/

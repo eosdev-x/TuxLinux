@@ -2,9 +2,9 @@
 set -euo pipefail
 
 for tool in git gh go rustc cargo node npm python3 pip3 java javac code \
-    wezterm chromium cloudflared podman distrobox starship flutter dart \
+    wezterm chromium-browser cloudflared podman distrobox starship flutter dart \
     protoc cmake ninja pkg-config; do
-    command -v "$tool"
+    command -v "$tool" || { echo "Missing required executable: $tool" >&2; exit 1; }
 done
 pkg-config --exists webkit2gtk-4.1 openssl gtk+-3.0 sqlite3
 cloudflared --version
