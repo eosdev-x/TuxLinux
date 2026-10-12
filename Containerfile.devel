@@ -1,0 +1,10 @@
+# A coherent Fedora userspace for native development without replacing Bazzite's
+# custom, epoch-bumped host graphics stack. Update this alongside Fedora rebases.
+FROM registry.fedoraproject.org/fedora:44
+RUN dnf5 install -y gcc gcc-c++ cmake ninja-build git pkgconf-pkg-config \
+        pipewire-devel mesa-libgbm-devel \
+    && dnf5 clean all
+# Link against the libraries supplied by the same package manager as the headers.
+RUN printf '#include <pipewire/pipewire.h>\n#include <gbm.h>\nint main(void) { pw_init(0, 0); return gbm_create_device(-1) != 0; }\n' > /tmp/headers-smoke.c \
+    && cc /tmp/headers-smoke.c $(pkg-config --cflags --libs libpipewire-0.3 gbm) -o /tmp/headers-smoke \
+    && rm /tmp/headers-smoke.c /tmp/headers-smoke
