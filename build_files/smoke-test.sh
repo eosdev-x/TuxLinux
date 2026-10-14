@@ -3,9 +3,14 @@ set -euo pipefail
 
 for tool in git gh go rustc cargo node npm python3 pip3 java javac code \
     wezterm chromium-browser cloudflared podman distrobox starship flutter dart \
-    protoc cmake ninja pkg-config; do
+    protoc cmake ninja pkg-config nvim tree-sitter direnv uv shfmt pre-commit \
+    clang clangd shellcheck; do
     command -v "$tool" || { echo "Missing required executable: $tool" >&2; exit 1; }
 done
+# LazyVim requires Neovim >= 0.11.2 with LuaJIT. Skip user configuration.
+nvim --headless -u NONE -i NONE \
+    -c 'lua if vim.fn.has("nvim-0.11.2") ~= 1 or not jit then vim.cmd("cquit 1") end' \
+    -c 'qa!'
 pkg-config --exists webkit2gtk-4.1 openssl gtk+-3.0 sqlite3
 cloudflared --version
 starship --version

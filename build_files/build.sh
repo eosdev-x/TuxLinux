@@ -47,8 +47,11 @@ dnf5 install -y tmux vim zsh fd-find zoxide wezterm
 # Browsers (Chromium required for OpenClaw browser automation / CDP)
 dnf5 install -y chromium
 
-# Editor
-dnf5 install -y code
+# Editors and LazyVim syntax tooling
+dnf5 install -y code neovim tree-sitter-cli
+
+# Development helpers not included by the development groups above
+dnf5 install -y direnv uv shfmt pre-commit clang clang-tools-extra
 
 # ChatGPT desktop with Codex; updated through subsequent image builds.
 dnf5 install -y chatgpt
