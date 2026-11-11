@@ -51,7 +51,7 @@ dnf5 install -y chromium
 dnf5 install -y code neovim tree-sitter-cli
 
 # Development helpers not included by the development groups above
-dnf5 install -y direnv uv shfmt pre-commit clang clang-tools-extra
+dnf5 install -y direnv uv pre-commit clang clang-tools-extra
 
 # ChatGPT desktop with Codex; updated through subsequent image builds.
 dnf5 install -y chatgpt
@@ -123,6 +123,15 @@ curl -fSL --retry 3 "https://github.com/starship/starship/releases/download/v${S
 printf '%s  %s\n' "$STARSHIP_SHA256" /tmp/starship.tar.gz | sha256sum --check --strict
 tar -xzf /tmp/starship.tar.gz -C /usr/bin starship
 rm /tmp/starship.tar.gz
+
+# shfmt is unavailable in Fedora's repositories; pin and verify upstream instead.
+# SHA-256: https://api.github.com/repos/mvdan/sh/releases/assets/547320883
+SHFMT_VERSION="3.14.1"
+SHFMT_SHA256="76e77641faa025814b77f153b29796b8e6fa2fca03e0c76a691608b86c7ea7bf"
+curl -fSL --retry 3 "https://github.com/mvdan/sh/releases/download/v${SHFMT_VERSION}/shfmt_v${SHFMT_VERSION}_linux_amd64" -o /tmp/shfmt
+printf '%s  %s\n' "$SHFMT_SHA256" /tmp/shfmt | sha256sum --check --strict
+install -m 0755 /tmp/shfmt /usr/bin/shfmt
+rm /tmp/shfmt
 
 # Preserve upstream registry policies and add our repository's verification key.
 python3 /ctx/configure-trust.py --key /ctx/cosign.pub
