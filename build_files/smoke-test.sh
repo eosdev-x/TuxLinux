@@ -11,7 +11,7 @@ done
 nvim --headless -u NONE -i NONE \
     -c 'lua if vim.fn.has("nvim-0.11.2") ~= 1 or not jit then vim.cmd("cquit 1") end' \
     -c 'qa!'
-pkg-config --exists webkit2gtk-4.1 openssl gtk+-3.0 sqlite3
+pkg-config --exists webkit2gtk-4.1 openssl gtk+-3.0 sqlite3 libgit2
 cloudflared --version
 starship --version
 javac -version
